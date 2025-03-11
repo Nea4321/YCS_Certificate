@@ -43,7 +43,7 @@ jobs:
             "username": "GitHub Actions",
             "content": "**✅ `${{ github.event.client_payload.submodule }}` 서브모듈 업데이트 완료!**"
           }' \
-          "${{ MANAGE_WEBHOOK_URL }}"
+          "${{ secrets.MANAGE_WEBHOOK_URL }}"
 
       - name: Send Failure Discord Notification
         if: failure()
@@ -54,4 +54,4 @@ jobs:
             "username": "GitHub Actions",
             "content": "**❌ `${{ github.event.client_payload.submodule }}` 서브모듈 업데이트 실패!**"
           }' \
-          "${{ MANAGE_WEBHOOK_URL }}"
+          "${{ secrets.MANAGE_WEBHOOK_URL }}"
