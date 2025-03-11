@@ -32,7 +32,7 @@ jobs:
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add "$SUBMODULE"
           git commit -m "chore: Update $SUBMODULE submodule" || echo "No changes to commit"
-          git push origin main
+          git push https://x-access-token:${{ secrets.UPDATE_TOKEN }}@github.com/Nea4321/YCS_Certificate.git HEAD:main
 
       - name: Send Success Discord Notification
         if: success()
@@ -40,7 +40,7 @@ jobs:
           curl -H "Content-Type: application/json" \
           -X POST \
           -d '{
-            "username": "GitHub Actions",
+            "username": "간수장",
             "content": "**✅ `${{ github.event.client_payload.submodule }}` 서브모듈 업데이트 완료!**"
           }' \
           "${{ secrets.MANAGE_WEBHOOK_URL }}"
@@ -51,7 +51,7 @@ jobs:
           curl -H "Content-Type: application/json" \
           -X POST \
           -d '{
-            "username": "GitHub Actions",
+            "username": "간수",
             "content": "**❌ `${{ github.event.client_payload.submodule }}` 서브모듈 업데이트 실패!**"
           }' \
           "${{ secrets.MANAGE_WEBHOOK_URL }}"
