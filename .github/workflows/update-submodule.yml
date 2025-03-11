@@ -1,0 +1,57 @@
+name: Update Submodule
+
+on:
+  repository_dispatch:
+    types: [update_submodule]  # 서브모듈이 보낸 신호를 받을 때 실행
+
+jobs:
+  update-submodule:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Main Repository
+        uses: actions/checkout@v4
+        with:
+          submodules: true  # 서브모듈 포함
+
+      - name: Determine Submodule to Update
+        run: |
+          SUBMODULE="${{ github.event.client_payload.submodule }}"
+          echo "Updating submodule: $SUBMODULE"
+          echo "SUBMODULE=$SUBMODULE" >> $GITHUB_ENV
+
+      - name: Update Submodule Dynamically
+        run: |
+          if [ -z "$SUBMODULE" ]; then
+            echo "No submodule specified. Exiting..."
+            exit 1
+          fi
+
+          git submodule update --remote "$SUBMODULE"
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$SUBMODULE"
+          git commit -m "chore: Update $SUBMODULE submodule" || echo "No changes to commit"
+          git push origin main
+
+      - name: Send Success Discord Notification
+        if: success()
+        run: |
+          curl -H "Content-Type: application/json" \
+          -X POST \
+          -d '{
+            "username": "GitHub Actions",
+            "content": "**✅ `${{ github.event.client_payload.submodule }}` 서브모듈 업데이트 완료!**"
+          }' \
+          "${{ MANAGE_WEBHOOK_URL }}"
+
+      - name: Send Failure Discord Notification
+        if: failure()
+        run: |
+          curl -H "Content-Type: application/json" \
+          -X POST \
+          -d '{
+            "username": "GitHub Actions",
+            "content": "**❌ `${{ github.event.client_payload.submodule }}` 서브모듈 업데이트 실패!**"
+          }' \
+          "${{ MANAGE_WEBHOOK_URL }}"
