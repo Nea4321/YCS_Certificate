@@ -8,6 +8,9 @@ jobs:
   update-submodule:
     runs-on: ubuntu-latest
 
+    permissions:
+       contents: write
+
     steps:
       - name: Checkout Main Repository
         uses: actions/checkout@v4
@@ -33,7 +36,7 @@ jobs:
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add "${{ env.SUBMODULE }}"
           git commit -m "chore: Update ${{ env.SUBMODULE }} submodule" || echo "No changes to commit"
-          git push https://x-access-token:${{ secrets.UPDATE_TOKEN }}@github.com/Nea4321/YCS_Certificate.git HEAD:main
+          git push
 
       - name: Send Success Discord Notification
         if: success()
