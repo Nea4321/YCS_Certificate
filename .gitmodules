@@ -4,3 +4,6 @@
 [submodule "Spring"]
 	path = Spring
 	url = https://github.com/Nea4321/YCS_Certificate_Spring.git
+[submodule "Pyton"]
+	path = Pyton
+	url = https://github.com/Nea4321/YCS_Certificate_Python.git
