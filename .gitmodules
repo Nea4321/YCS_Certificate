@@ -6,4 +6,4 @@
 	url = https://github.com/Nea4321/YCS_Certificate_Spring.git
 [submodule "Engine"]
 	path = Engine
-	url = https://github.com/Nea4321/YCS_Certificate_Python.git
+	url = https://github.com/Nea4321/YCS_Certificate_Engine.git
